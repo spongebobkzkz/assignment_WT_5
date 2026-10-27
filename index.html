@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPEED CARGO — Assignment #5</title>
+  <link rel="stylesheet" href="css/custom.css">
+  <script defer src="task1.js"></script>
+  <script defer src="task2.js"></script>
+  <script defer src="task3.js"></script>
+</head>
+<body>
+
+  <header class="cargo-nav">
+    <div class="header-container">
+      <a class="cargo-brand" href="index.html">
+        <span class="brand-pulse-dot"></span>
+        <span class="cargo-brand-text">CARGO<span>/</span>PULSE</span>
+        <span class="badge-system">Assignment #5</span>
+      </a>
+
+      <nav aria-label="Tasks Navigation">
+        <ul class="nav-tabs-wrapper">
+          <li><button type="button" class="nav-tab-btn active" data-target="task-1-pane">Task 1: Drone Battle</button></li>
+          <li><button type="button" class="nav-tab-btn" data-target="task-2-pane">Task 2: Dispatch Kanban</button></li>
+          <li><button type="button" class="nav-tab-btn" data-target="task-3-pane">Task 3: Express Pass</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="sub-hero">
+    <div class="sub-hero-kicker">Web Technologies • Assignment #5</div>
+    <h1 class="sub-hero-title">JavaScript Basics & DOM Manipulation</h1>
+    <p class="sub-hero-desc">
+      Interactive web suite featuring state-driven combat simulation, pure data-constructed dispatch operations,
+      and real-time accessible ticket validation.
+    </p>
+  </div>
+
+  <main class="main-content">
+    <section id="task-1-pane" class="task-section-pane active" aria-labelledby="task1-heading">
+      <div class="cargo-card">
+        <div style="margin-bottom: 1.25rem;">
+          <h2 id="task1-heading" style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.35rem;">
+            Task 1: Drone Security Duel
+          </h2>
+          <p style="color: var(--cargo-muted); font-size: 0.92rem;">
+            Hero Cargo Guardian vs Cyber Hijacker (100 HP each). Hero attacks (8–15 dmg), defends (halves incoming hit),
+            or repairs shields (+20 HP, 3 charges). Enemy strikes back for 5–14 dmg with a 10% critical hit chance.
+          </p>
+        </div>
+
+        <div class="battle-arena-grid">
+          <article id="hero-panel" class="combatant-panel hero-panel">
+            <div class="combatant-header-row">
+              <h3 class="combatant-title">Cargo Guardian (Player)</h3>
+              <span id="hero-status" class="combatant-role-badge">Active</span>
+            </div>
+            <div class="hp-track" role="progressbar" aria-label="Hero Drone Health" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              <div id="hero-hp-fill" class="hp-fill"></div>
+            </div>
+            <div class="hp-status-text">
+              <span>Energy Integrity</span>
+              <span id="hero-hp-text">100 / 100 HP</span>
+            </div>
+          </article>
+
+          <article id="enemy-panel" class="combatant-panel enemy-panel">
+            <div class="combatant-header-row">
+              <h3 class="combatant-title">Cyber Hijacker (Enemy)</h3>
+              <span id="enemy-status" class="combatant-role-badge">Hostile</span>
+            </div>
+            <div class="hp-track" role="progressbar" aria-label="Enemy Drone Health" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              <div id="enemy-hp-fill" class="hp-fill"></div>
+            </div>
+            <div class="hp-status-text">
+              <span>Energy Integrity</span>
+              <span id="enemy-hp-text">100 / 100 HP</span>
+            </div>
+          </article>
+
+          <div id="battle-banner" class="battle-banner-alert" role="status" aria-live="polite"></div>
+
+          <div class="battle-action-row">
+            <button id="btn-attack" type="button" class="btn-cargo btn-navy">⚔️ Attack (8-15)</button>
+            <button id="btn-defend" type="button" class="btn-cargo btn-blue">🛡️ Defend (Half Dmg)</button>
+            <button id="btn-heal" type="button" class="btn-cargo btn-primary-cargo">🧪 Repair Shield (+20 HP) [3/3]</button>
+            <button id="btn-restart" type="button" class="btn-cargo btn-secondary-cargo">🔄 Restart Mission</button>
+          </div>
+
+          <div class="battle-log-wrapper">
+            <h4 class="battle-log-header">Tactical Combat Log (Last 5 Actions)</h4>
+            <ul id="battle-log-list" class="battle-log-entries" aria-live="polite"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="task-2-pane" class="task-section-pane" aria-labelledby="task2-heading">
+      <div class="cargo-card">
+        <div style="margin-bottom: 1.25rem;">
+          <h2 id="task2-heading" style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.35rem;">
+            Task 2: Fleet Dispatch Kanban Board
+          </h2>
+          <p style="color: var(--cargo-muted); font-size: 0.92rem;">
+            Constructed entirely from a JavaScript array of 12 shipment objects into empty DOM containers.
+            Features dynamic filtering, title search, priority sorting, and a 3-shipment safety limit on In Progress tasks.
+          </p>
+        </div>
+
+        <div class="kanban-filter-bar">
+          <div class="kanban-filter-inputs">
+            <input type="search" id="kanban-search" class="cargo-control" placeholder="Search shipments by title..." aria-label="Search shipments" style="min-width: 240px;">
+
+            <select id="kanban-tag-filter" class="cargo-control" aria-label="Filter by category" style="width: auto;">
+              <option value="all">All Categories</option>
+              <option value="Transit">Transit</option>
+              <option value="Fleet">Fleet</option>
+              <option value="Customs">Customs</option>
+              <option value="Warehousing">Warehousing</option>
+              <option value="Aviation">Aviation</option>
+            </select>
+
+            <select id="kanban-sort" class="cargo-control" aria-label="Sort shipments" style="width: auto;">
+              <option value="none">Default Order</option>
+              <option value="priority">Sort by Priority (High → Low)</option>
+              <option value="hours">Sort by Operational Hours</option>
+              <option value="title">Sort Alphabetically</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="kanban-stats-card">
+          <div class="kanban-stats-info-line">
+            <span>Fleet Delivery Execution Progress</span>
+            <span id="kanban-stats-summary">Calculating delivery metrics...</span>
+          </div>
+          <div class="kanban-progress-track" role="progressbar" aria-label="Dispatch Progress">
+            <div id="kanban-progress-fill" class="kanban-progress-fill-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div id="kanban-rule-alert" class="kanban-blocked-alert" role="alert" aria-live="assertive"></div>
+
+        <div id="kanban-app" class="kanban-tri-columns">
+          <div class="kanban-single-column" id="col-todo-wrap">
+            <div class="column-top-meta">
+              <h3 class="column-heading">Scheduled Shipments</h3>
+              <span id="count-todo" class="column-badge-counter">0</span>
+            </div>
+            <div id="column-todo-list" class="kanban-cards-wrapper"></div>
+          </div>
+
+          <div class="kanban-single-column" id="col-progress-wrap">
+            <div class="column-top-meta">
+              <h3 class="column-heading">In Transit <small style="font-size: 0.78rem; font-weight: normal; color: var(--cargo-muted);">(Max 3)</small></h3>
+              <span id="count-progress" class="column-badge-counter">0/3</span>
+            </div>
+            <div id="column-progress-list" class="kanban-cards-wrapper"></div>
+          </div>
+
+          <div class="kanban-single-column" id="col-done-wrap">
+            <div class="column-top-meta">
+              <h3 class="column-heading">Successfully Delivered</h3>
+              <span id="count-done" class="column-badge-counter">0</span>
+            </div>
+            <div id="column-done-list" class="kanban-cards-wrapper"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="task-3-pane" class="task-section-pane" aria-labelledby="task3-heading">
+      <div class="cargo-card">
+        <div style="margin-bottom: 1.25rem;">
+          <h2 id="task3-heading" style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.35rem;">
+            Task 3: Express Transit Pass Builder
+          </h2>
+          <p style="color: var(--cargo-muted); font-size: 0.92rem;">
+            Live pass booking with instant preview card and real-time custom validation
+            (inventory capacity, sold-out date blacklist, two-part full name, disposable email blocking, active promo codes).
+          </p>
+        </div>
+
+        <div id="ticket-error-summary" class="form-errors-banner" role="alert" tabindex="-1">
+          ⚠️ Please correct the <span id="error-count">0</span> invalid field(s) marked below before proceeding.
+        </div>
+
+        <div class="form-preview-grid">
+          <div>
+            <form id="ticket-form" class="ticket-booking-form" autocomplete="off">
+              <div class="form-field-group">
+                <label for="field-event" class="field-label">Transit Express Route *</label>
+                <select id="field-event" class="cargo-control" required>
+                  <option value="">-- Select an Express Route --</option>
+                  <option value="astana-almaty">Astana ⇄ Almaty High-Speed Express ($65)</option>
+                  <option value="shymkent-aktau">Shymkent ⇄ Aktau Caspian Transit ($85)</option>
+                  <option value="karaganda-atyrau">Karaganda ⇄ Atyrau Industrial Link ($55)</option>
+                </select>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <div class="form-field-group">
+                <label for="field-date" class="field-label">Date of Departure *</label>
+                <input type="date" id="field-date" class="cargo-control" required>
+                <span class="field-help-text">Note: 2026-11-05 and 2026-11-12 are fully booked. Past dates rejected.</span>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <div class="form-field-group">
+                <label for="field-type" class="field-label">Passenger Travel Tier *</label>
+                <select id="field-type" class="cargo-control" required>
+                  <option value="standard">Standard Class Coach (14 seats left)</option>
+                  <option value="vip">VIP Luxury Sleeper Suite (3 seats left)</option>
+                  <option value="student">Student Commuter Pass (7 seats left)</option>
+                </select>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <div class="form-field-group">
+                <label for="field-quantity" class="field-label">Ticket Quantity *</label>
+                <input type="number" id="field-quantity" class="cargo-control" min="1" max="10" value="1" required>
+                <span class="field-help-text">Quantity cannot exceed available inventory for selected tier.</span>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <div class="form-field-group">
+                <label for="field-name" class="field-label">Passenger Full Name *</label>
+                <input type="text" id="field-name" class="cargo-control" placeholder="e.g. Estai Beisenbay" required>
+                <span class="field-help-text">Must contain both First and Last name (letters and hyphens only).</span>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <div class="form-field-group">
+                <label for="field-email" class="field-label">Contact Email Address *</label>
+                <input type="email" id="field-email" class="cargo-control" placeholder="passenger@speedcargo.kz" required>
+                <span class="field-help-text">Must be valid format and not from a disposable domain.</span>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <div class="form-field-group">
+                <label for="field-promo" class="field-label">Corporate Promo Code (Optional)</label>
+                <input type="text" id="field-promo" class="cargo-control" placeholder="Try ASTANA2026, SPEED50, or CARGO15">
+                <span class="field-help-text">Active promo codes: ASTANA2026 (-20%), SPEED50 (-50%), CARGO15 (-15%)</span>
+                <span class="field-error-feedback" aria-live="polite"></span>
+              </div>
+
+              <button type="submit" class="btn-cargo btn-primary-cargo" id="btn-submit-ticket" style="margin-top: 0.5rem;">
+                Confirm & Issue Boarding Pass
+              </button>
+            </form>
+          </div>
+
+          <div class="ticket-preview-wrapper">
+            <div class="ticket-preview-title">Live Boarding Pass Preview</div>
+
+            <div class="luxury-ticket-card" aria-label="Ticket Preview Card">
+              <div class="ticket-top-section">
+                <h3 id="preview-event-name" class="ticket-route-name">Astana ⇄ Almaty Express</h3>
+                <span id="preview-ticket-type" class="ticket-tier-pill">Standard Class</span>
+              </div>
+
+              <div class="ticket-matrix-grid">
+                <div>
+                  <div class="ticket-matrix-label">Departure Date</div>
+                  <div id="preview-date" class="ticket-matrix-val">—</div>
+                </div>
+                <div>
+                  <div class="ticket-matrix-label">Seats Reserved</div>
+                  <div id="preview-qty" class="ticket-matrix-val">1 pass(es)</div>
+                </div>
+                <div>
+                  <div class="ticket-matrix-label">Passenger</div>
+                  <div id="preview-name" class="ticket-matrix-val">Passenger Name</div>
+                </div>
+                <div>
+                  <div class="ticket-matrix-label">Contact Email</div>
+                  <div id="preview-email" class="ticket-matrix-val">passenger@speedcargo.kz</div>
+                </div>
+              </div>
+
+              <div class="ticket-bottom-bar">
+                <div>
+                  <div class="ticket-matrix-label">Total Fare</div>
+                  <div id="preview-total-price" class="ticket-price-total">$65.00</div>
+                  <div id="preview-discount-info" class="ticket-promo-applied"></div>
+                </div>
+                <div>
+                  <div class="ticket-serial-barcode">PASS-PREVIEW</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="booking-result-section" class="confirmed-booking-wrap">
+              <div id="booking-result-details"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cargo-footer">
+    <p>
+      <strong>SPEED CARGO / CARGO PULSE</strong> • Web Technologies • <strong>Beisenbay Estai</strong> (IT-2511)
+    </p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".nav-tab-btn");
+      const panes = document.querySelectorAll(".task-section-pane");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          const targetPaneId = tab.getAttribute("data-target");
+
+          tabs.forEach(t => t.classList.remove("active"));
+          panes.forEach(p => p.classList.remove("active"));
+
+          tab.classList.add("active");
+          const targetPane = document.getElementById(targetPaneId);
+          if (targetPane) {
+            targetPane.classList.add("active");
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
